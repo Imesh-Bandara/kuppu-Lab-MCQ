@@ -95,7 +95,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-5">
               <Link
-                href="/subjects/innovation-management-and-entrepreneurship"
+                href="/practice"
                 className="inline-flex items-center gap-2 rounded-full bg-[#062B50] px-6 py-3.5 text-[14px] font-semibold text-white shadow-[0_10px_24px_rgba(6,43,80,0.25)] transition-all hover:-translate-y-0.5 hover:bg-[#031d36]"
               >
                 Start Practicing Now
@@ -212,7 +212,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 Just a few simple steps to start your practice journey.
               </p>
               <Link
-                href="/subjects/innovation-management-and-entrepreneurship"
+                href="/practice"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#062B50] px-5 py-2.5 text-[13px] font-semibold text-white shadow-[0_8px_18px_rgba(6,43,80,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#031d36]"
               >
                 Get Started

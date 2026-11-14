@@ -14,9 +14,9 @@ export const SUBJECT_NAV_ITEMS = [
   },
   {
     name: "Cloud Computing",
-    href: "/#subjects",
-    badge: "Coming Soon",
-    badgeColor: "bg-[#f1f5f9] text-[#64748B]",
+    href: "/subjects/cloud-computing",
+    badge: "Available",
+    badgeColor: "bg-[#f3edff] text-[#7B4DFF]",
   },
 ];
 
@@ -47,7 +47,7 @@ export function Navbar({ onStart, activeTab = "home" }: NavbarProps) {
           </Link>
 
           <Link
-            href="/subjects/innovation-management-and-entrepreneurship"
+            href="/practice"
             className={`text-[13.5px] font-medium transition ${
               activeTab === "practice"
                 ? "font-semibold text-[#087BFF]"
@@ -121,7 +121,7 @@ export function Navbar({ onStart, activeTab = "home" }: NavbarProps) {
             </button>
           ) : (
             <Link
-              href="/subjects/innovation-management-and-entrepreneurship"
+              href="/practice"
               className="inline-flex items-center gap-1.5 rounded-full bg-[#062B50] px-5 py-2 text-[13px] font-semibold text-white shadow-[0_6px_16px_rgba(6,43,80,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#031d36]"
             >
               Start Practicing
@@ -147,7 +147,7 @@ export function Navbar({ onStart, activeTab = "home" }: NavbarProps) {
               Home
             </Link>
             <Link
-              href="/subjects/innovation-management-and-entrepreneurship"
+              href="/practice"
               onClick={() => setOpen(false)}
             >
               Practice (IME)
