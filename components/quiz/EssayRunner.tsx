@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Clock3, FileText, RotateCcw, Send, Trophy } from "lucide-react";
-import type { EssaySection } from "../../data/cloudComputing";
+import { cloudEssayAnswerSheet, type EssaySection } from "../../data/cloudComputing";
 
 const ESSAY_SECONDS = 2 * 60 * 60;
 
@@ -76,6 +76,33 @@ export function EssayRunner({ sections, onExit }: EssayRunnerProps) {
             <p className="text-sm font-bold text-[#7B4DFF]">AUTOMATIC CONCEPT SCORE</p><p className="mt-2 text-6xl font-black">{result.score}<span className="text-2xl text-[#9aa2b6]">/{result.max}</span></p>
             <p className="mt-3 text-sm text-[#75809a]">Your score is based on matching important model-answer concepts. Use it as practice feedback, not as a replacement for lecturer marking.</p>
             <div className="mt-7 flex flex-wrap justify-center gap-3"><button type="button" onClick={reset} className="inline-flex items-center gap-2 rounded-full bg-[#7B4DFF] px-5 py-3 text-sm font-bold text-white"><RotateCcw className="h-4 w-4" /> Try again</button><button type="button" onClick={onExit} className="rounded-full border border-[#dfe2eb] px-5 py-3 text-sm font-bold text-[#47516a]">Back to Cloud Computing</button></div>
+          </section>
+          <section className="mt-8 rounded-3xl bg-white p-6 shadow-[0_10px_35px_rgba(37,44,73,0.07)] ring-1 ring-[#e6e9f1] sm:p-8">
+            <div className="border-b border-[#e6e9f1] pb-4">
+              <p className="text-xs font-black uppercase tracking-widest text-[#7B4DFF]">Review after submission</p>
+              <h2 className="mt-1 text-2xl font-black">Essay Answer Sheet</h2>
+              <p className="mt-2 text-sm leading-relaxed text-[#75809a]">
+                These model answers show the key concepts expected for each essay part. Use them to compare with your response and improve your structure.
+              </p>
+            </div>
+            <div className="mt-6 space-y-7">
+              {sections.map((section) => (
+                <div key={section.id}>
+                  <h3 className="text-lg font-black text-[#343e56]">{section.title}</h3>
+                  <div className="mt-3 space-y-3">
+                    {section.questions.map((question) => (
+                      <article key={question.id} className="rounded-2xl border border-[#e6e9f1] bg-[#fafbfe] p-4">
+                        <div className="flex items-start justify-between gap-4">
+                          <h4 className="text-sm font-bold text-[#343e56]">{question.title}: {question.prompt}</h4>
+                          <span className="shrink-0 rounded-full bg-[#f0edff] px-2 py-1 text-[10px] font-bold text-[#6844e9]">{question.marks} marks</span>
+                        </div>
+                        <p className="mt-3 text-sm leading-relaxed text-[#5f6b83]">{cloudEssayAnswerSheet[question.id]}</p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </section>
         </div>
       </main>
