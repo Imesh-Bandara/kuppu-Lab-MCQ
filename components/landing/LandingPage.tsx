@@ -57,10 +57,10 @@ const subjects = [
   },
   {
     name: "Cloud Computing",
-    href: "#subjects",
+    href: "/subjects/cloud-computing",
     icon: Cloud,
     color: "bg-[#7B4DFF]",
-    available: false,
+    available: true,
   },
 ];
 

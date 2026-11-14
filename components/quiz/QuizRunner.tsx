@@ -21,7 +21,7 @@ import {
 import { type Question } from "../../data/questions";
 
 const letters = ["A", "B", "C", "D", "E", "F"];
-const EXAM_SECONDS = 60 * 60; // 60 minutes
+const DEFAULT_EXAM_SECONDS = 60 * 60;
 
 function sameAnswers(a: number[] = [], b: number[] = []) {
   if (!a || !b) return false;
@@ -38,6 +38,7 @@ type QuizRunnerProps = {
   questions: Question[];
   subjectTitle?: string;
   versionName?: string;
+  durationMinutes?: number;
   onExit: () => void;
 };
 
@@ -45,11 +46,15 @@ export function QuizRunner({
   questions,
   subjectTitle = "INNOVATION MANAGEMENT",
   versionName = "VERSION 2",
+  durationMinutes = 60,
   onExit,
 }: QuizRunnerProps) {
+  const examSeconds = durationMinutes * 60;
   const [mode, setMode] = useState<"quiz" | "finished">("quiz");
   const [darkMode, setDarkMode] = useState(false);
-  const [remainingSeconds, setRemainingSeconds] = useState(EXAM_SECONDS);
+  const [remainingSeconds, setRemainingSeconds] = useState(
+    durationMinutes > 0 ? examSeconds : DEFAULT_EXAM_SECONDS
+  );
   const [current, setCurrent] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, number[]>>({});
 
@@ -145,7 +150,7 @@ export function QuizRunner({
   function restartQuiz() {
     setUserAnswers({});
     setCurrent(0);
-    setRemainingSeconds(EXAM_SECONDS);
+    setRemainingSeconds(examSeconds);
     setMode("quiz");
   }
 

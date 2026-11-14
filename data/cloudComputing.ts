@@ -1,0 +1,291 @@
+import type { Question } from "./questions";
+
+const q = (
+  id: number,
+  lecture: string,
+  prompt: string,
+  options: string[],
+  correct: number[]
+): Question => ({
+  id,
+  lecture,
+  topic: lecture,
+  prompt,
+  options,
+  correct,
+});
+
+export const cloudQuestions: Question[] = [
+  q(1, "Basic Cloud Concepts", "Which cloud characteristic lets consumers provision computing resources automatically without human interaction from the provider?", ["Broad network access", "On-demand self-service", "Resource pooling", "Measured service"], [1]),
+  q(2, "Basic Cloud Concepts", "Which NIST cloud actor performs independent assessments of cloud service operations, performance, and security?", ["Cloud broker", "Cloud carrier", "Cloud auditor", "Cloud provider"], [2]),
+  q(3, "Basic Cloud Concepts", "Which AWS global infrastructure component isolates failures and contains one or more discrete data centres?", ["Edge location", "Availability Zone", "Region", "VPC subnet"], [1]),
+  q(4, "Basic Cloud Concepts", "In the AWS Shared Responsibility Model, which item is primarily the customer’s responsibility?", ["Physical data-centre security", "AWS hardware and global infrastructure", "Guest OS configuration, patches, and firewall rules", "Host virtualization software"], [2]),
+  q(5, "Basic Cloud Concepts", "Which deployment model is dedicated to a single organization and usually offers greater control at a higher management cost?", ["Public cloud", "Private cloud", "Community cloud", "Edge cloud"], [1]),
+  q(6, "Security, IAM & Monitoring", "What does the Principle of Least Privilege require?", ["Everyone receives root access", "Users receive only the minimum permissions needed", "Policies change once a year", "Passwords never expire"], [1]),
+  q(7, "Security, IAM & Monitoring", "Which IAM component is a logical set of permissions that can be assumed temporarily by users or services?", ["User group", "IAM role", "Access key ID", "Network ACL"], [1]),
+  q(8, "Security, IAM & Monitoring", "What is the key difference between a stateful Security Group and a stateless Network ACL?", ["Security Groups are stateless", "NACLs automatically allow return traffic", "Security Groups track return traffic, while NACLs require rules in both directions", "NACLs apply to individual network interfaces"], [2]),
+  q(9, "Security, IAM & Monitoring", "Which monitoring telemetry records numerical values such as CPU load, memory usage, and disk IOPS?", ["Audit logs", "Metrics", "System events", "Stack traces"], [1]),
+  q(10, "Security, IAM & Monitoring", "What does Federated Identity Management allow?", ["A different password for every application", "One verified identity to access applications across security domains", "Login without encryption", "Offline authentication without an identity provider"], [1]),
+  q(11, "Cloud Migration & Cloud-Native", "Which AWS migration strategy is known as lift-and-shift?", ["Refactor", "Replatform", "Rehost", "Repurchase"], [2]),
+  q(12, "Cloud Migration & Cloud-Native", "According to the 12-factor methodology, where should application configuration be stored?", ["Hardcoded in source code", "In the execution environment", "Inside immutable image layers", "In plain-text HTTP headers"], [1]),
+  q(13, "Cloud Migration & Cloud-Native", "What is the fundamental difference between a data warehouse and a data lake?", ["A lake stores only structured data", "A warehouse stores structured analytics data while a lake stores raw data in its native format", "A warehouse stores raw unstructured data", "They are identical"], [1]),
+  q(14, "Cloud Migration & Cloud-Native", "Which in-memory cache supports advanced data structures, persistence, and master-replica replication?", ["Memcached", "Redis", "Amazon EBS", "Amazon S3"], [1]),
+  q(15, "Cloud Migration & Cloud-Native", "Which migration strategy completely turns off redundant applications with no continuing business value?", ["Retain", "Retire", "Rehost", "Replatform"], [1]),
+  q(16, "Microservices, Containers & IaC", "What is a major advantage of microservices?", ["All components must deploy together", "Services can be independently developed, deployed, and scaled", "They remove the need for monitoring", "They require one shared database"], [1]),
+  q(17, "Microservices, Containers & IaC", "Which Linux features provide process and resource isolation for containers?", ["Hypervisors and BIOS", "Namespaces and cgroups", "DNS and DHCP", "Threads and sockets"], [1]),
+  q(18, "Microservices, Containers & IaC", "Which mechanism lets container image layers share unchanged data efficiently?", ["Copy-on-Write", "Full duplication", "Static linking", "Database replication"], [0]),
+  q(19, "Microservices, Containers & IaC", "What is the smallest deployable unit in Kubernetes that can contain one or more co-located containers?", ["Node", "Pod", "Cluster", "Service account"], [1]),
+  q(20, "Microservices, Containers & IaC", "Terraform and AWS CloudFormation are examples of what?", ["Message queues", "Infrastructure as Code tools", "Container runtimes", "Identity providers"], [1]),
+];
+
+export type RubricCriterion = {
+  label: string;
+  keywords: string[];
+  marks: number;
+};
+
+export type StructuredQuestion = {
+  id: string;
+  title: string;
+  prompt: string;
+  marks: number;
+  rubric: RubricCriterion[];
+};
+
+export type CloudPaperSection = {
+  id: string;
+  title: string;
+  scenario?: string;
+  questions: StructuredQuestion[];
+};
+
+export const cloudPaperSections: CloudPaperSection[] = [
+  {
+    id: "concepts",
+    title: "Question 1 · Basic Cloud Concepts & Core Services",
+    scenario: "MedTech Solutions runs an on-premises patient-management system with long hardware procurement cycles, high cooling costs, and wasted capacity at night.",
+    questions: [
+      { id: "q1a", title: "a) On-premises inefficiencies", prompt: "Explain three financial or operational inefficiencies that could be reduced by migrating to a cloud service provider.", marks: 6, rubric: [
+        { label: "High capital expenditure", keywords: ["capital expenditure", "capex", "upfront cost", "hardware cost"], marks: 2 },
+        { label: "Rigid procurement or scaling", keywords: ["procurement", "scaling", "provision", "months", "lead time"], marks: 2 },
+        { label: "Capacity or maintenance waste", keywords: ["over-provision", "under-provision", "capacity", "cooling", "maintenance", "pay as you go"], marks: 2 },
+      ] },
+      { id: "q1b", title: "b) Public vs private cloud", prompt: "Contrast Public Cloud and Private Cloud by discussing two characteristics and the security trade-offs of each.", marks: 6, rubric: [
+        { label: "Public cloud characteristics", keywords: ["public cloud", "multi-tenant", "pay as you go", "shared"], marks: 2 },
+        { label: "Private cloud characteristics", keywords: ["private cloud", "single tenant", "dedicated", "exclusive"], marks: 2 },
+        { label: "Security and cost trade-off", keywords: ["security", "control", "compliance", "cost", "management overhead"], marks: 2 },
+      ] },
+      { id: "q1c", title: "c) Shared responsibility for a database PaaS", prompt: "Explain how security responsibilities shift when MedTech uses a managed relational database such as Amazon RDS or Azure SQL.", marks: 8, rubric: [
+        { label: "Provider protects the cloud", keywords: ["provider", "physical", "data center", "hardware", "infrastructure"], marks: 2 },
+        { label: "Provider manages platform", keywords: ["patch", "operating system", "database engine", "managed"], marks: 2 },
+        { label: "Customer protects data", keywords: ["customer", "data", "classification", "schema", "backup"], marks: 2 },
+        { label: "Customer manages access and network", keywords: ["iam", "identity", "credential", "firewall", "network"], marks: 2 },
+      ] },
+    ],
+  },
+  {
+    id: "security",
+    title: "Question 2 · Security, IAM & Monitoring",
+    questions: [
+      { id: "q2a", title: "a) Software Defined Security", prompt: "Define Software Defined Security and explain two ways it automates compliance and threat protection in dynamic cloud networks.", marks: 5, rubric: [
+        { label: "Definition", keywords: ["software defined security", "software-based security", "automated security"], marks: 2 },
+        { label: "Automated controls", keywords: ["access control", "firewall", "segmentation", "policy"], marks: 1 },
+        { label: "Continuous detection or response", keywords: ["monitoring", "threat", "intrusion", "automated response", "compliance"], marks: 2 },
+      ] },
+      { id: "q2b", title: "b) Banking MFA workflow", prompt: "Design a banking portal authentication workflow using three distinct MFA factors.", marks: 5, rubric: [
+        { label: "Something you know", keywords: ["password", "pin", "know"], marks: 2 },
+        { label: "Something you have", keywords: ["token", "phone", "otp", "authenticator", "have"], marks: 2 },
+        { label: "Something you are", keywords: ["biometric", "fingerprint", "face", "iris", "are"], marks: 1 },
+      ] },
+      { id: "q2c", title: "c) OLTP vs OLAP", prompt: "Compare OLTP and OLAP based on query patterns, normalization, and response-time expectations.", marks: 5, rubric: [
+        { label: "OLTP workload", keywords: ["oltp", "transaction", "small", "sub-second", "normalized"], marks: 2 },
+        { label: "OLAP workload", keywords: ["olap", "analytical", "historical", "complex", "denormalized"], marks: 2 },
+        { label: "Clear comparison", keywords: ["response time", "reporting", "normalization"], marks: 1 },
+      ] },
+      { id: "q2d", title: "d) Cloud monitoring", prompt: "Explain the value of Metrics, Events, and Logs, and how threshold alerts help avoid outages.", marks: 5, rubric: [
+        { label: "Metrics", keywords: ["metrics", "cpu", "memory", "numerical"], marks: 1 },
+        { label: "Events and logs", keywords: ["events", "logs", "activity", "troubleshoot"], marks: 2 },
+        { label: "Threshold alerts", keywords: ["threshold", "alert", "notification", "outage", "remediation"], marks: 2 },
+      ] },
+    ],
+  },
+  {
+    id: "migration",
+    title: "Question 3 · Cloud Migration & Cloud-Native Applications",
+    questions: [
+      { id: "q3a", title: "a) Migration phases", prompt: "Define cloud migration and outline the discovery, planning, and validation phases.", marks: 4, rubric: [
+        { label: "Definition", keywords: ["cloud migration", "move", "assets", "workloads"], marks: 1 },
+        { label: "Discovery and planning", keywords: ["discovery", "inventory", "dependency", "planning", "design"], marks: 2 },
+        { label: "Validation", keywords: ["validation", "test", "verify", "performance"], marks: 1 },
+      ] },
+      { id: "q3b", title: "b) Replatforming vs refactoring", prompt: "Compare replatforming with refactoring/re-architecting and give a suitable business scenario for each.", marks: 6, rubric: [
+        { label: "Replatforming", keywords: ["replatform", "lift-tinker", "minor", "rds"], marks: 2 },
+        { label: "Refactoring", keywords: ["refactor", "re-architect", "microservices", "serverless"], marks: 2 },
+        { label: "Business scenarios and trade-off", keywords: ["scenario", "cost", "risk", "performance", "scalability"], marks: 2 },
+      ] },
+      { id: "q3c", title: "c) Cloud-native applications", prompt: "Explain the core principles of cloud-native applications and why organizations use distributed microservices.", marks: 5, rubric: [
+        { label: "Cloud-native principles", keywords: ["cloud-native", "elastic", "resilient", "scalable", "automated"], marks: 3 },
+        { label: "Microservices benefit", keywords: ["microservices", "independent", "deploy", "scale"], marks: 2 },
+      ] },
+      { id: "q3d", title: "d) Redis caching", prompt: "Evaluate how Redis caching reduces database bottlenecks and latency during traffic spikes.", marks: 5, rubric: [
+        { label: "In-memory cache", keywords: ["redis", "cache", "in-memory", "memory"], marks: 2 },
+        { label: "Lower latency", keywords: ["latency", "fast", "sub-millisecond", "response"], marks: 1 },
+        { label: "Protects database under load", keywords: ["database", "read", "traffic", "bottleneck", "load"], marks: 2 },
+      ] },
+    ],
+  },
+  {
+    id: "containers",
+    title: "Question 4 · Microservices, Containers & Infrastructure as Code",
+    questions: [
+      { id: "q4a", title: "a) Containers vs virtual machines", prompt: "Compare containers and VMs in terms of operating-system isolation, resource use, portability, and startup time.", marks: 5, rubric: [
+        { label: "VM isolation", keywords: ["virtual machine", "guest operating system", "hypervisor"], marks: 2 },
+        { label: "Container isolation", keywords: ["container", "kernel", "namespace", "cgroup"], marks: 2 },
+        { label: "Efficiency and startup", keywords: ["lightweight", "portable", "fast", "startup"], marks: 1 },
+      ] },
+      { id: "q4b", title: "b) Architecture under a deadline", prompt: "Recommend a starting architecture for a product with a tight delivery deadline and explain how it can evolve later.", marks: 5, rubric: [
+        { label: "Pragmatic starting choice", keywords: ["monolith", "monolithic", "simple", "deadline", "faster"], marks: 2 },
+        { label: "Evolution path", keywords: ["refactor", "microservices", "evolve", "modular"], marks: 2 },
+        { label: "Trade-off", keywords: ["scaling", "bottleneck", "traction", "maintenance"], marks: 1 },
+      ] },
+      { id: "q4c", title: "c) Kubernetes orchestration", prompt: "Explain how Kubernetes Deployments and Services help operate containerized applications.", marks: 5, rubric: [
+        { label: "Deployment desired state", keywords: ["deployment", "desired state", "replica", "scaling"], marks: 3 },
+        { label: "Service networking", keywords: ["service", "load balancer", "network", "pod"], marks: 2 },
+      ] },
+      { id: "q4d", title: "d) Infrastructure as Code", prompt: "Define IaC and explain its benefits for configuration consistency, version control, and environments.", marks: 5, rubric: [
+        { label: "Definition", keywords: ["infrastructure as code", "iac", "code files", "provision"], marks: 2 },
+        { label: "Consistency and version control", keywords: ["consistent", "version control", "git", "history"], marks: 2 },
+        { label: "Repeatable environments", keywords: ["automated", "testing", "staging", "production", "repeatable"], marks: 1 },
+      ] },
+    ],
+  },
+];
+
+export type EssayQuestion = {
+  id: string;
+  title: string;
+  prompt: string;
+  marks: number;
+  rubric: RubricCriterion[];
+};
+
+export type EssaySection = {
+  id: string;
+  title: string;
+  scenario: string;
+  questions: EssayQuestion[];
+};
+
+export const cloudEssaySections: EssaySection[] = [
+  {
+    id: "architecture-migration",
+    title: "Question 1 · Cloud Architecture, Services & Migration Strategy",
+    scenario: "Nexus Retail is a fast-growing e-commerce enterprise with aging on-premises infrastructure. During Black Friday, traffic bottlenecks, high latency, and crashes occur because scalability and availability are limited.",
+    questions: [
+      { id: "essay-1a", title: "a) On-premises limitations", prompt: "Discuss three critical financial and operational limitations of maintaining on-premises infrastructure during high-demand surges.", marks: 6, rubric: [
+        { label: "Capital expenditure", keywords: ["capex", "capital expenditure", "hardware cost", "upfront"], marks: 2 },
+        { label: "Capacity and scaling", keywords: ["capacity", "scalability", "over-provision", "under-provision", "traffic"], marks: 2 },
+        { label: "Operations and procurement", keywords: ["procurement", "maintenance", "cooling", "downtime", "lead time"], marks: 2 },
+      ] },
+      { id: "essay-1b", title: "b) 3-tier multi-AZ architecture", prompt: "Explain how a 3-tier architecture deployed across multiple Availability Zones can remove single points of failure and achieve high availability.", marks: 7, rubric: [
+        { label: "Three tiers", keywords: ["presentation", "application", "database", "3-tier", "three tier"], marks: 2 },
+        { label: "Multiple AZ design", keywords: ["availability zone", "multi-az", "multiple az", "redundant"], marks: 2 },
+        { label: "Traffic distribution and failover", keywords: ["load balancer", "failover", "health check", "auto scaling"], marks: 2 },
+        { label: "No single point of failure", keywords: ["single point of failure", "high availability", "fault tolerant"], marks: 1 },
+      ] },
+      { id: "essay-1c", title: "c) AWS 6 R migration strategies", prompt: "Evaluate Rehost, Replatform, and Refactor/Re-architect, then recommend the best strategy for the legacy monolithic database.", marks: 6, rubric: [
+        { label: "Rehost", keywords: ["rehost", "lift and shift", "as-is"], marks: 1 },
+        { label: "Replatform", keywords: ["replatform", "lift-tinker", "managed database", "rds"], marks: 2 },
+        { label: "Refactor", keywords: ["refactor", "re-architect", "microservices", "serverless"], marks: 1 },
+        { label: "Reasoned recommendation", keywords: ["recommend", "legacy", "risk", "cost", "migration"], marks: 2 },
+      ] },
+      { id: "essay-1d", title: "d) Shared Responsibility: IaaS to PaaS", prompt: "Explain how operational and security responsibilities shift from self-managed VMs (IaaS) to a managed database service (PaaS).", marks: 6, rubric: [
+        { label: "Provider responsibility", keywords: ["provider", "physical", "hardware", "data center", "database engine", "patch"], marks: 2 },
+        { label: "Customer responsibility", keywords: ["customer", "data", "identity", "iam", "access", "firewall"], marks: 2 },
+        { label: "Shift from IaaS to PaaS", keywords: ["iaas", "paas", "managed", "operational burden", "responsibility"], marks: 2 },
+      ] },
+    ],
+  },
+  {
+    id: "security-iam",
+    title: "Question 2 · Cloud Security, Identity Management & Monitoring",
+    scenario: "As a Cloud Security Engineer at a multinational financial institution, you must overhaul access controls, secure customer data, and implement proactive observability.",
+    questions: [
+      { id: "essay-2a", title: "a) Principle of Least Privilege and IAM", prompt: "Explain PLOP and discuss how Users, Groups, Roles, and Policies enforce it.", marks: 6, rubric: [
+        { label: "Least privilege definition", keywords: ["least privilege", "minimum", "only required", "plop"], marks: 2 },
+        { label: "Users and groups", keywords: ["user", "group", "permissions"], marks: 2 },
+        { label: "Roles and policies", keywords: ["role", "policy", "temporary", "assume"], marks: 2 },
+      ] },
+      { id: "essay-2b", title: "b) FIM vs SSO", prompt: "Compare Federated Identity Management and Single Sign-On, giving an ideal corporate use case for each.", marks: 6, rubric: [
+        { label: "FIM", keywords: ["federated identity", "security domain", "identity provider", "organization"], marks: 2 },
+        { label: "SSO", keywords: ["single sign-on", "one login", "multiple applications"], marks: 2 },
+        { label: "Comparison and use cases", keywords: ["compare", "use case", "corporate", "saas"], marks: 2 },
+      ] },
+      { id: "essay-2c", title: "c) Multi-layered financial-data security", prompt: "Design a strategy using MFA with at least three factors, encryption at rest and in transit, and Software Defined Security.", marks: 7, rubric: [
+        { label: "Three MFA factors", keywords: ["password", "pin", "token", "otp", "fingerprint", "biometric", "something you know", "something you have", "something you are"], marks: 3 },
+        { label: "Encryption at rest and in transit", keywords: ["at rest", "in transit", "tls", "https", "encryption", "key"], marks: 2 },
+        { label: "Software Defined Security", keywords: ["software defined security", "sds", "segmentation", "automated", "threat"], marks: 2 },
+      ] },
+      { id: "essay-2d", title: "d) Metrics, Events, Logs and alerts", prompt: "Discuss the importance of Metrics, Events, and Logs, and explain how threshold alerts protect against breaches or performance degradation.", marks: 6, rubric: [
+        { label: "Metrics", keywords: ["metrics", "cpu", "memory", "latency"], marks: 2 },
+        { label: "Events and logs", keywords: ["events", "logs", "audit", "troubleshoot"], marks: 2 },
+        { label: "Threshold alerting", keywords: ["threshold", "alert", "notification", "breach", "degradation", "remediation"], marks: 2 },
+      ] },
+    ],
+  },
+  {
+    id: "microservices",
+    title: "Question 3 · Microservices, Containerization & Cloud-Native Architectures",
+    scenario: "A fintech startup is designing a payment platform requiring massive concurrency, fast scaling, rapid deployments, and strict fault isolation.",
+    questions: [
+      { id: "essay-3a", title: "a) Microservices vs monolith", prompt: "Compare the architectures across scalability, deployment complexity, and fault isolation.", marks: 7, rubric: [
+        { label: "Scalability", keywords: ["scalability", "independent scale", "scale service", "monolith"], marks: 2 },
+        { label: "Deployment complexity", keywords: ["deployment", "deploy", "independent", "complexity", "pipeline"], marks: 2 },
+        { label: "Fault isolation", keywords: ["fault isolation", "failure", "blast radius", "resilience"], marks: 2 },
+        { label: "Balanced comparison", keywords: ["trade-off", "advantage", "disadvantage"], marks: 1 },
+      ] },
+      { id: "essay-3b", title: "b) Day-one architecture decision", prompt: "Evaluate starting with microservices immediately versus starting with a monolith and refactoring later, considering time-to-market and client urgency.", marks: 6, rubric: [
+        { label: "Monolith benefits", keywords: ["monolith", "faster", "simple", "time-to-market"], marks: 2 },
+        { label: "Microservices benefits", keywords: ["microservices", "scale", "independent", "fault"], marks: 2 },
+        { label: "Contextual recommendation", keywords: ["recommend", "startup", "urgency", "refactor", "trade-off"], marks: 2 },
+      ] },
+      { id: "essay-3c", title: "c) Containers vs VMs", prompt: "Explain the differences in OS virtualization, resource overhead, and Copy-on-Write.", marks: 6, rubric: [
+        { label: "Operating-system virtualization", keywords: ["kernel", "guest operating system", "hypervisor", "namespace", "container"], marks: 2 },
+        { label: "Resource overhead and startup", keywords: ["overhead", "lightweight", "startup", "portable"], marks: 2 },
+        { label: "Copy-on-Write", keywords: ["copy-on-write", "cow", "image layer", "shared layer"], marks: 2 },
+      ] },
+      { id: "essay-3d", title: "d) Kubernetes orchestration", prompt: "Discuss Deployments, Pods, and Services, and explain how Kubernetes maintains desired state and handles worker-node failures.", marks: 6, rubric: [
+        { label: "Pods", keywords: ["pod", "container", "smallest"], marks: 2 },
+        { label: "Deployments and desired state", keywords: ["deployment", "desired state", "replica", "rolling"], marks: 2 },
+        { label: "Services and node failure", keywords: ["service", "load balancer", "node failure", "reschedule", "self-heal"], marks: 2 },
+      ] },
+    ],
+  },
+  {
+    id: "iac-framework",
+    title: "Question 4 · IaC, Well-Architected Framework & Innovation",
+    scenario: "An enterprise software firm is modernizing its lifecycle through DevOps automation, cloud-agnostic infrastructure definitions, and multi-cloud integration for global expansion.",
+    questions: [
+      { id: "essay-4a", title: "a) Barriers to IT innovation", prompt: "Describe three barriers to innovation in traditional corporate environments and explain how cloud computing enables rapid innovation.", marks: 6, rubric: [
+        { label: "Traditional barriers", keywords: ["bureaucracy", "risk", "legacy", "budget", "skills", "resistance", "barrier"], marks: 3 },
+        { label: "Cloud as enabler", keywords: ["cloud", "rapid", "agility", "prototype", "pay as you go", "scalability"], marks: 3 },
+      ] },
+      { id: "essay-4b", title: "b) IaC configuration tiers", prompt: "Define IaC and analyze its impact across Cloud Provider, OS/Host, and Application configuration tiers.", marks: 7, rubric: [
+        { label: "IaC definition", keywords: ["infrastructure as code", "iac", "code", "provision"], marks: 2 },
+        { label: "Cloud provider tier", keywords: ["cloud provider", "network", "vpc", "storage", "compute"], marks: 2 },
+        { label: "OS/Host and application tiers", keywords: ["operating system", "host", "application", "configuration"], marks: 2 },
+        { label: "Automation and consistency", keywords: ["repeatable", "version control", "consistent", "devops"], marks: 1 },
+      ] },
+      { id: "essay-4c", title: "c) Well-Architected Framework", prompt: "Evaluate how the Reliability and Cost Optimization pillars help architects build robust cloud workloads.", marks: 6, rubric: [
+        { label: "Reliability", keywords: ["reliability", "fault", "recover", "availability", "backup", "multi-az"], marks: 3 },
+        { label: "Cost Optimization", keywords: ["cost optimization", "cost", "right-size", "utilization", "pay as you go"], marks: 2 },
+        { label: "Balanced workload outcome", keywords: ["robust", "architecture", "trade-off", "monitor"], marks: 1 },
+      ] },
+      { id: "essay-4d", title: "d) Multi-cloud integration", prompt: "Define Multi-Cloud Integration and discuss two advantages and two challenges of integrating data and applications across providers.", marks: 6, rubric: [
+        { label: "Definition", keywords: ["multi-cloud", "multiple cloud", "providers", "integration"], marks: 2 },
+        { label: "Advantages", keywords: ["avoid lock-in", "resilience", "availability", "best of breed", "cost"], marks: 2 },
+        { label: "Challenges", keywords: ["complexity", "latency", "security", "data transfer", "interoperability", "skills"], marks: 2 },
+      ] },
+    ],
+  },
+];
