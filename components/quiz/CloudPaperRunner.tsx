@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, CheckCircle2, Clock3, FileText, RotateCcw, Send, Trophy } from "lucide-react";
-import type { CloudPaperSection } from "../../data/cloudComputing";
+import { cloudPaperAnswerSheet, type CloudPaperSection } from "../../data/cloudComputing";
 import type { Question } from "../../data/questions";
 
 const PAPER_SECONDS = 2 * 60 * 60;
@@ -106,6 +106,36 @@ export function CloudPaperRunner({ questions, sections, onExit }: CloudPaperRunn
           <div className="mt-6 rounded-2xl bg-white p-5 text-sm leading-relaxed text-[#5f6b83] ring-1 ring-[#e6e9f1]">
             Structured answers are marked against the model-answer concepts from the supplied answer paper. Each matching rubric point earns its assigned marks; review your wording and concepts before using the score as an exam prediction.
           </div>
+          <section className="mt-6 rounded-3xl bg-white p-6 shadow-[0_10px_35px_rgba(37,44,73,0.07)] ring-1 ring-[#e6e9f1] sm:p-8">
+            <p className="text-xs font-black uppercase tracking-widest text-[#7B4DFF]">Answer review</p>
+            <h2 className="mt-1 text-2xl font-black">MCQ Answer Sheet</h2>
+            <div className="mt-5 grid gap-3 md:grid-cols-2">
+              {questions.map((question, index) => (
+                <article key={question.id} className="rounded-2xl border border-[#e6e9f1] bg-[#fafbfe] p-4">
+                  <p className="text-sm font-bold text-[#343e56]">{index + 1}. {question.prompt}</p>
+                  <p className="mt-2 text-sm text-[#12a064]"><strong>Correct answer:</strong> {question.correct.map((answer) => question.options[answer]).join(", ")}</p>
+                  <p className="mt-1 text-xs text-[#75809a]"><strong>Your answer:</strong> {answers[question.id]?.map((answer) => question.options[answer]).join(", ") || "Not answered"}</p>
+                  {answers[question.id]?.[0] !== question.correct[0] && question.explanation && <p className="mt-2 rounded-xl bg-amber-50 p-2.5 text-xs leading-relaxed text-amber-800"><strong>Why:</strong> {question.explanation}</p>}
+                </article>
+              ))}
+            </div>
+            <p className="mt-8 text-xs font-black uppercase tracking-widest text-[#7B4DFF]">Structured answer sheet</p>
+            <div className="mt-4 space-y-5">
+              {sections.map((section) => (
+                <div key={section.id}>
+                  <h3 className="text-lg font-black text-[#343e56]">{section.title}</h3>
+                  <div className="mt-3 space-y-3">
+                    {section.questions.map((question) => (
+                      <article key={question.id} className="rounded-2xl border border-[#e6e9f1] bg-[#fafbfe] p-4">
+                        <div className="flex items-start justify-between gap-4"><h4 className="text-sm font-bold text-[#343e56]">{question.title}: {question.prompt}</h4><span className="shrink-0 rounded-full bg-[#f0edff] px-2 py-1 text-[10px] font-bold text-[#6844e9]">{question.marks} marks</span></div>
+                        <p className="mt-3 text-sm leading-relaxed text-[#5f6b83]">{cloudPaperAnswerSheet[question.id]}</p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       </main>
     );

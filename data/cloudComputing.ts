@@ -15,6 +15,29 @@ const q = (
   correct,
 });
 
+const cloudQuestionExplanations: Record<number, string> = {
+  1: "On-demand self-service lets customers provision resources automatically whenever they need them.",
+  2: "A cloud auditor independently checks service performance, operations, and security.",
+  3: "An Availability Zone is an isolated location with separate data centres and redundant infrastructure.",
+  4: "Customers configure and patch their guest OS, firewall rules, and applications; the provider manages the underlying cloud.",
+  5: "A private cloud is dedicated to one organisation, giving more control but requiring more cost and management.",
+  6: "Least privilege means an identity receives only the permissions required for its task, not broad default access.",
+  7: "An IAM role is assumed temporarily by a trusted user or service and provides a controlled permission set.",
+  8: "Security Groups are stateful and allow return traffic automatically; NACLs are stateless and need both directions.",
+  9: "Metrics are numerical measurements such as CPU, memory, and disk IOPS.",
+  10: "Federation lets one trusted identity access applications across different security domains.",
+  11: "Rehost is lift-and-shift: the workload moves with little or no code change.",
+  12: "The 12-factor approach keeps configuration in the execution environment, separate from source code.",
+  13: "Warehouses hold structured data for analytics; lakes retain large volumes of raw data in native formats.",
+  14: "Redis supports rich data structures, persistence, and replication, making it suitable for advanced caching.",
+  15: "Retire means shutting down an application that no longer provides business value.",
+  16: "Microservices can be developed, deployed, and scaled independently instead of scaling the whole application.",
+  17: "Namespaces isolate processes and cgroups limit and account for their resource usage.",
+  18: "Copy-on-Write shares unchanged image layers and creates a writable layer only when changes occur.",
+  19: "A Pod is Kubernetes' smallest deployable unit and can contain one or more co-located containers.",
+  20: "Terraform and CloudFormation define and provision infrastructure through code.",
+};
+
 export const cloudQuestions: Question[] = [
   q(1, "Basic Cloud Concepts", "Which cloud characteristic lets consumers provision computing resources automatically without human interaction from the provider?", ["Broad network access", "On-demand self-service", "Resource pooling", "Measured service"], [1]),
   q(2, "Basic Cloud Concepts", "Which NIST cloud actor performs independent assessments of cloud service operations, performance, and security?", ["Cloud broker", "Cloud carrier", "Cloud auditor", "Cloud provider"], [2]),
@@ -36,7 +59,10 @@ export const cloudQuestions: Question[] = [
   q(18, "Microservices, Containers & IaC", "Which mechanism lets container image layers share unchanged data efficiently?", ["Copy-on-Write", "Full duplication", "Static linking", "Database replication"], [0]),
   q(19, "Microservices, Containers & IaC", "What is the smallest deployable unit in Kubernetes that can contain one or more co-located containers?", ["Node", "Pod", "Cluster", "Service account"], [1]),
   q(20, "Microservices, Containers & IaC", "Terraform and AWS CloudFormation are examples of what?", ["Message queues", "Infrastructure as Code tools", "Container runtimes", "Identity providers"], [1]),
-];
+].map((question) => ({
+  ...question,
+  explanation: cloudQuestionExplanations[question.id],
+}));
 
 export type RubricCriterion = {
   label: string;
@@ -160,6 +186,24 @@ export const cloudPaperSections: CloudPaperSection[] = [
     ],
   },
 ];
+
+export const cloudPaperAnswerSheet: Record<string, string> = {
+  q1a: "Key points: high capital expenditure for physical infrastructure; long procurement and installation cycles; over-provisioning wastes capacity during quiet periods while under-provisioning causes bottlenecks during peaks; cooling and maintenance add ongoing cost.",
+  q1b: "Public Cloud is provider-operated, multi-tenant, elastic, and pay-as-you-go, but provides less physical control. Private Cloud is dedicated to one organisation and can support tighter control and compliance, but costs more and requires greater management. The trade-off is convenience and elasticity versus control and operational overhead.",
+  q1c: "For a managed database PaaS, the provider secures physical facilities, hardware, network infrastructure, host OS, and database-engine patching. The customer remains responsible for data classification, schemas, credentials, IAM permissions, database configuration, firewall rules, and application access. This is a reduced customer burden compared with self-managed IaaS.",
+  q2a: "Software Defined Security manages controls such as access, segmentation, firewalls, and detection through software and policy. It can automatically apply compliance rules as resources change and continuously monitor traffic to detect and respond to threats.",
+  q2b: "A strong banking flow combines something you know (password or PIN), something you have (authenticator-app OTP, phone, or hardware token), and something you are (fingerprint, face, or iris). The identity provider validates each factor before issuing a session.",
+  q2c: "OLTP handles many small operational transactions with simple queries, highly normalised tables, and sub-second response expectations. OLAP supports historical analysis with large, complex queries, often denormalised structures, and longer reporting queries.",
+  q2d: "Metrics show numerical behaviour such as CPU, memory, and latency. Events show state changes and significant occurrences. Logs record detailed activity for audit and troubleshooting. Threshold alerts notify operators or trigger remediation when values such as error rate or CPU cross safe limits.",
+  q3a: "Cloud migration is the structured movement of IT workloads or assets to cloud services. Discovery inventories workloads and dependencies; planning selects architecture, priorities, risks, and migration waves; validation tests functionality, performance, security, and recovery after migration.",
+  q3b: "Replatforming makes limited changes, such as moving a database to RDS, and is faster with lower risk. Refactoring redesigns the application for cloud-native services such as microservices or serverless and gives greater long-term scalability, but costs more and takes longer. Choose based on urgency, technical debt, risk, and expected business value.",
+  q3c: "Cloud-native applications are designed for elasticity, automation, resilience, observability, and independent deployment. Distributed microservices allow teams to scale and release parts independently and isolate some failures, although they add networking and operational complexity.",
+  q3d: "Redis stores frequently requested data in high-speed memory, reducing repeated reads from the primary database. This lowers latency and absorbs traffic spikes, protecting database connections and compute resources. Cache invalidation, expiry, consistency, and memory limits must still be managed.",
+  q4a: "VMs run a complete guest OS on a hypervisor, making them heavier and slower to start. Containers share the host kernel and isolate processes with namespaces and cgroups, so they are lightweight and portable. Copy-on-Write shares unchanged image layers and creates a writable layer only for modifications.",
+  q4b: "A monolith is usually faster and simpler for a startup under a tight deadline. It can later be modularised and refactored into microservices when scaling bottlenecks, team boundaries, or independent deployment needs become clear. Immediate microservices offer isolation and independent scaling but introduce distributed-system complexity.",
+  q4c: "Kubernetes Deployments declare the desired number and version of replicas and reconcile drift. Pods are the smallest deployable units containing one or more containers. Services provide stable discovery and load balancing to Pods. When a worker node fails, controllers reschedule replacement Pods on healthy nodes and Services continue routing to available replicas.",
+  q4d: "IaC provisions infrastructure from version-controlled code instead of manual steps. It can define cloud resources such as networks and databases, OS or host packages and settings, and application deployments and environment configuration. This improves consistency, reviewability, repeatability, and automated promotion across environments.",
+};
 
 export type EssayQuestion = {
   id: string;

@@ -6,6 +6,7 @@ export type Question = {
   multiple?: boolean;
   options: string[];
   correct: number[];
+  explanation?: string;
 };
 
 const q = (id: number, lecture: string, prompt: string, options: string[], correct: number[], multiple = false): Question => ({
@@ -454,4 +455,3 @@ export const subjectVersions = [
     status: "active" as const,
   },
 ];
-

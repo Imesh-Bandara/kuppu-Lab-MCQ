@@ -475,6 +475,11 @@ export function QuizRunner({
                           .join(" | ")}
                       </span>
                     </div>
+                    {!item.isCorrect && item.question.explanation && (
+                      <div className="mt-2 rounded-xl border border-amber-200 bg-amber-50 p-2.5 text-xs leading-relaxed text-amber-800">
+                        <strong>Why:</strong> {item.question.explanation}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
